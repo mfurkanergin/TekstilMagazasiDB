@@ -84,13 +84,25 @@ namespace TekstilMagazasiDB
 
         private void addButton_Click_2(object sender, EventArgs e)
         {
-            connect.Open();
+            /*connect.Open();
             NpgsqlCommand command = new NpgsqlCommand("insert into product(product_id, product_name, stock, price, category) values (@p1, @p2, @p3, @p4, @p5)", connect);
             command.Parameters.AddWithValue("@p1", int.Parse(ProductIdTextBox.Text));
             command.Parameters.AddWithValue("@p2", ProductNameTextBox.Text);
             command.Parameters.AddWithValue("@p3", int.Parse(stockTextBox.Text));
             command.Parameters.AddWithValue("@p4", double.Parse(priceTextBox.Text));
             command.Parameters.AddWithValue("@p5", int.Parse(categoryComboBox.SelectedValue.ToString()));
+            command.ExecuteNonQuery();
+            connect.Close();
+            MessageBox.Show("Ürün ekleme başarılı.");*/
+
+            connect.Open();
+            NpgsqlCommand command = new NpgsqlCommand("call insert_product(:p_id , :p_name, :p_stock , :p_price , :p_category)", connect);
+            command.Parameters.AddWithValue("p_id", int.Parse(ProductIdTextBox.Text));
+            command.Parameters.AddWithValue("p_name", ProductNameTextBox.Text);
+            command.Parameters.AddWithValue("p_stock", int.Parse(stockTextBox.Text));
+            command.Parameters.AddWithValue("p_price", double.Parse(priceTextBox.Text));
+            command.Parameters.AddWithValue("p_category", int.Parse(categoryComboBox.SelectedValue.ToString()));
+            command.CommandType = CommandType.Text;
             command.ExecuteNonQuery();
             connect.Close();
             MessageBox.Show("Ürün ekleme başarılı.");
@@ -119,9 +131,17 @@ namespace TekstilMagazasiDB
 
         private void deleteButton_Click2(object sender, EventArgs e)
         {
-            connect.Open();
+            /*connect.Open();
             NpgsqlCommand command = new NpgsqlCommand("delete from product where product_id=@p1", connect);
             command.Parameters.AddWithValue("@p1", int.Parse(ProductIdTextBox.Text));
+            command.ExecuteNonQuery();
+            connect.Close();
+            MessageBox.Show("Ürün silme işlemi başarılı.");*/
+
+            connect.Open();
+            NpgsqlCommand command = new NpgsqlCommand("call delete_product(:p_id)", connect);
+            command.Parameters.AddWithValue("p_id", int.Parse(ProductIdTextBox.Text));
+            command.CommandType = CommandType.Text;
             command.ExecuteNonQuery();
             connect.Close();
             MessageBox.Show("Ürün silme işlemi başarılı.");
@@ -164,17 +184,18 @@ namespace TekstilMagazasiDB
         private void addButton3_Click(object sender, EventArgs e)
         {
             connect.Open();
-            NpgsqlCommand command = new NpgsqlCommand("insert into personnel(personnel_id, personnel_name, personnel_surname, personnel_age, personnel_salary, personnel_type) " +
-                "values (@p1, @p2, @p3, @p4, @p5, @p6)", connect);
-            command.Parameters.AddWithValue("@p1", int.Parse(textBox4.Text));
-            command.Parameters.AddWithValue("@p2", textBox3.Text);
-            command.Parameters.AddWithValue("@p3", textBox2.Text);
-            command.Parameters.AddWithValue("@p4", int.Parse(textBox1.Text));
-            command.Parameters.AddWithValue("@p5", double.Parse(textBox5.Text));
-            command.Parameters.AddWithValue("@p6", int.Parse(comboBox1.SelectedValue.ToString()));
+            NpgsqlCommand command = new NpgsqlCommand("call insert_personnel(:p_id , :p_name, :p_surname, :p_age , :p_salary , :p_type)", connect);
+            command.Parameters.AddWithValue("p_id", int.Parse(textBox4.Text));
+            command.Parameters.AddWithValue("p_name", textBox3.Text);
+            command.Parameters.AddWithValue("p_surname", textBox2.Text);
+            command.Parameters.AddWithValue("p_age", int.Parse(textBox1.Text));
+            command.Parameters.AddWithValue("p_salary", double.Parse(textBox5.Text));
+            command.Parameters.AddWithValue("p_type", int.Parse(comboBox1.SelectedValue.ToString()));
+            command.CommandType = CommandType.Text;
             command.ExecuteNonQuery();
             connect.Close();
             MessageBox.Show("Personel ekleme başarılı.");
+
         }
 
         private void deleteButton3_Click(object sender, EventArgs e)
@@ -189,7 +210,7 @@ namespace TekstilMagazasiDB
 
         private void UpdateButton3_Click(object sender, EventArgs e)
         {
-            connect.Open();
+            /*connect.Open();
             NpgsqlCommand command = new NpgsqlCommand("update personnel set personnel_name=@p2, personnel_surname=@p3, personnel_age = @p4, personnel_salary=@p5 where personnel_id = @p1", connect);
             command.Parameters.AddWithValue("@p1", int.Parse(textBox4.Text));
             command.Parameters.AddWithValue("@p2", textBox3.Text);
@@ -198,7 +219,19 @@ namespace TekstilMagazasiDB
             command.Parameters.AddWithValue("@p5", double.Parse(textBox5.Text));
             command.ExecuteNonQuery();
             connect.Close();
-            MessageBox.Show("Ürün güncelleme başarılı.");
+            MessageBox.Show("Ürün güncelleme başarılı.");*/
+
+            connect.Open();
+            NpgsqlCommand command = new NpgsqlCommand("call update_personnel(:p_id , :p_name, :p_surname, :p_age , :p_salary)", connect);
+            command.Parameters.AddWithValue("p_id", int.Parse(textBox4.Text));
+            command.Parameters.AddWithValue("p_name", textBox3.Text);
+            command.Parameters.AddWithValue("p_surname", textBox2.Text);
+            command.Parameters.AddWithValue("p_age", int.Parse(textBox1.Text));
+            command.Parameters.AddWithValue("p_salary", double.Parse(textBox5.Text));
+            command.CommandType = CommandType.Text;
+            command.ExecuteNonQuery();
+            connect.Close();
+            MessageBox.Show("Personel güncelleme başarılı.");
         }
 
         private void searchButton3_Click(object sender, EventArgs e)
